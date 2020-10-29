@@ -1,7 +1,10 @@
 package com.jinxp09277.j.library.app
 
 import android.app.Application
+import com.google.gson.Gson
+import com.jinxp09277.j.library.log.JConsolePrinter
 import com.jinxp09277.j.library.log.JLogConfig
+import com.jinxp09277.j.library.log.JLogConfig.JsonParser
 import com.jinxp09277.j.library.log.JLogManager
 
 /**
@@ -12,6 +15,10 @@ class MApp : Application() {
     override fun onCreate() {
         super.onCreate()
         JLogManager.init(object : JLogConfig() {
+            override fun injectJsonParser(): JsonParser {
+                return JsonParser { src -> Gson().toJson(src) }
+            }
+
             override fun getGlobalTag(): String {
                 return "MApp"
             }
@@ -19,6 +26,10 @@ class MApp : Application() {
             override fun enable(): Boolean {
                 return true
             }
-        })
+
+            override fun stackTraceDepth(): Int {
+                return 0
+            }
+        },JConsolePrinter())
     }
 }

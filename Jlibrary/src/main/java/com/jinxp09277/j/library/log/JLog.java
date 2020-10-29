@@ -1,8 +1,9 @@
 package com.jinxp09277.j.library.log;
 
-import android.util.Log;
-
 import androidx.annotation.NonNull;
+
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * Created by LWB on 2020/10/27
@@ -12,6 +13,12 @@ import androidx.annotation.NonNull;
  * 3.模拟控制台
  */
 public class JLog {
+    private static final String J_LOG_PACKAGE;
+
+    static {
+        String className = JLog.class.getName();
+        J_LOG_PACKAGE = className.substring(0, className.lastIndexOf('.') + 1);
+    }
 
     //不带tag ,global
     public static void v(Object... contents) {
@@ -76,12 +83,31 @@ public class JLog {
             return;
         }
         StringBuilder sb = new StringBuilder();
-        String body = parseBody(contents);
+        if (config.includeTread()) {
+            String threadInfo = JLogConfig.J_THREAD_FORMATTER.format(Thread.currentThread());
+            sb.append(threadInfo).append("\n");
+        }
+        if (config.stackTraceDepth() > 0) {
+            String stackTrace = JLogConfig.J_STACK_TRACE_FORMATTER.format(JStackTraceUtil.getCroppedRealStackTrack(new Throwable().getStackTrace(), J_LOG_PACKAGE, config.stackTraceDepth()));
+            sb.append(stackTrace).append("\n");
+        }
+        String body = parseBody(contents, config);
         sb.append(body);
-        Log.println(type, tag, body);
+        List<JLogPrinter> printers = config.printers() != null ? Arrays.asList(config.printers()) : JLogManager.getInstance().getPrinters();
+        if (printers == null) {
+            return;
+        }
+        //打印log
+        for (JLogPrinter printer : printers) {
+            printer.print(config, type, tag, sb.toString());
+
+        }
     }
 
-    private static String parseBody(@NonNull Object[] contents) {
+    private static String parseBody(@NonNull Object[] contents, @NonNull JLogConfig config) {
+        if (config.injectJsonParser() != null) {
+            return config.injectJsonParser().toJson(contents);
+        }
         StringBuilder sb = new StringBuilder();
         for (Object o : contents) {
             sb.append(o.toString()).append(";");
