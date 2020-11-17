@@ -1,8 +1,10 @@
 package com.jinxp09277.j.library.app
 
 import android.app.Application
+import android.content.Intent
 import com.google.gson.Gson
 import com.jinxp09277.j.library.log.JConsolePrinter
+import com.jinxp09277.j.library.log.JFilePrinter
 import com.jinxp09277.j.library.log.JLogConfig
 import com.jinxp09277.j.library.log.JLogConfig.JsonParser
 import com.jinxp09277.j.library.log.JLogManager
