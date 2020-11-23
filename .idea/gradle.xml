@@ -12,8 +12,9 @@
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
-            <option value="$PROJECT_DIR$/Jlibrary" />
             <option value="$PROJECT_DIR$/app" />
+            <option value="$PROJECT_DIR$/j-library" />
+            <option value="$PROJECT_DIR$/j-ui" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />

@@ -1,3 +1,4 @@
-include ':Jlibrary'
+include ':j-ui'
+include ':j-library'
 include ':app'
 rootProject.name = "J-library"

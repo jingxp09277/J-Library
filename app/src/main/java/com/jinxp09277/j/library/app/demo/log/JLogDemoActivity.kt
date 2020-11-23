@@ -1,4 +1,4 @@
-package com.jinxp09277.j.library.app.demo
+package com.jinxp09277.j.library.app.demo.log
 
 import android.content.Intent
 import android.os.Bundle
@@ -61,8 +61,7 @@ class JLogDemoActivity : AppCompatActivity() {
 
 
     fun createAndSaveFile() {
-        var intent = Intent(Intent.ACTION_CREATE_DOCUMENT)
-        Intent.ACTION_OPEN_DOCUMENT
+        val intent = Intent(Intent.ACTION_CREATE_DOCUMENT)
         val sdf = SimpleDateFormat("MMddHHmm", Locale.CHINA)
 
         intent.apply {
